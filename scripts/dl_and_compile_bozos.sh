@@ -12,29 +12,12 @@ DOSSIER_LOCAL=~/Documents/dev/bozos/
 
 # ======================
 
-# Temporary archive
-TMP_TAR=/tmp/pfc_remote.tar.gz
+echo "📂 Syncing project from remote (excluding .gitignore rules)..."
+rsync -avz \
+  --exclude-from=<(ssh "$DISTANT_USER@$DISTANT_HOST" "cat '$DOSSIER_DISTANT/.gitignore'") \
+  "$DISTANT_USER@$DISTANT_HOST:$DOSSIER_DISTANT/" \
+  "$DOSSIER_LOCAL/"
 
-echo "📦 Creating archive on remote machine..."
-ssh "$DISTANT_USER@$DISTANT_HOST" "
-  cd '$DOSSIER_DISTANT' &&
-  tar czf /tmp/pfc_remote.tar.gz Cargo.toml src/ assets/ scripts/ README.md
-"
-
-echo "📥 Downloading archive..."
-scp "$DISTANT_USER@$DISTANT_HOST:/tmp/pfc_remote.tar.gz" "$TMP_TAR"
-
-echo "🧹 Local cleanup: removing src/ and Cargo.toml if present..."
-rm -rf "$DOSSIER_LOCAL/src" "$DOSSIER_LOCAL/Cargo.toml" "$DOSSIER_LOCAL/assets" "$DOSSIER_LOCAL/README.md" "$DOSSIER_LOCAL/scripts"
-
-echo "📂 Extracting into $DOSSIER_LOCAL..."
-mkdir -p "$DOSSIER_LOCAL"
-tar xzf "$TMP_TAR" -C "$DOSSIER_LOCAL"
-
-echo "🧼 Cleaning up temporary files..."
-rm "$TMP_TAR"
-ssh "$DISTANT_USER@$DISTANT_HOST" "rm /tmp/pfc_remote.tar.gz"
-
-echo "✅ Project successfully fetched into $DOSSIER_LOCAL"
-cd "$DOSSIER_LOCAL"
+echo "✅ Project successfully synced into $DOSSIER_LOCAL"
+cd "$DOSSIER_LOCAL" || exit 1
 cargo run
