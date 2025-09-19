@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 use crate::plugins::camera::{setup_camera, update_camera};
+use crate::plugins::keys::{keys_setup, keys_update};
 use crate::plugins::test::{setup_test, update_test};
 use crate::plugins::world_loading::{setup_world_loading, update_loading};
 
@@ -27,5 +28,14 @@ impl Plugin for TestPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_test)
             .add_systems(Update, update_test);
+    }
+}
+
+pub struct KeysPlugin;
+
+impl Plugin for KeysPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, keys_setup)
+            .add_systems(Update, keys_update);
     }
 }

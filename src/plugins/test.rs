@@ -1,10 +1,10 @@
 use bevy::prelude::*;
 
-use crate::resources::blocks::{BlockBundle, BlockHandle, BlockHandles, BlockType, load_blocks};
+use crate::resources::blocks::{BlockBundle, BlockHandles, BlockType};
 
 #[derive(Debug, Component)]
 pub struct Test {
-    iterator: i128,
+    i: i32,
 }
 
 pub fn setup_test(
@@ -32,7 +32,7 @@ pub fn setup_test(
         },
         Transform::from_xyz(4.0, 8.0, 4.0),
     ));
-    commands.spawn((Test { iterator: 0 },));
+    commands.spawn((Test { i: 0 },));
 }
 
 pub fn update_test(
@@ -41,17 +41,31 @@ pub fn update_test(
     mut testquery: Query<&mut Test>,
 ) {
     for mut test in testquery.iter_mut() {
-        test.iterator += 1;
-        if test.iterator == 1 {
-            println!(
-                "block_type de block_handle: {:?}",
-                block_handles.grass_handle.block_type
-            );
-            commands.spawn(BlockBundle::new(
-                BlockType::Grass,
-                Vec3::new(2.0, 0.5, 2.0),
-                &block_handles.grass_handle,
-            ));
+        if test.i == 0 {
+            for x in -5..5 {
+                for y in -5..5 {
+                    for z in -5..5 {
+                        let block_type = if y < -2 {
+                            BlockType::Stone
+                        } else if y == -2 {
+                            BlockType::Dirt
+                        } else if y == -1 {
+                            BlockType::Grass
+                        } else {
+                            BlockType::Bedrock
+                        };
+                        let position = Vec3::new(x as f32, y as f32, z as f32);
+                        let block_handle = match block_type {
+                            BlockType::Dirt => &block_handles.dirt_handle,
+                            BlockType::Grass => &block_handles.grass_handle,
+                            BlockType::Stone => &block_handles.stone_handle,
+                            BlockType::Bedrock => &block_handles.bedrock_handle,
+                        };
+                        commands.spawn(BlockBundle::new(block_type, position, block_handle));
+                    }
+                }
+            }
         }
+        test.i = 1;
     }
 }

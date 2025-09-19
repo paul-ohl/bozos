@@ -1,0 +1,29 @@
+[move_forward]
+KeyCode = ["KeyW"]
+
+[move_backward]
+KeyCode = ["KeyS"]
+
+[move_left]
+KeyCode = ["KeyA"]
+
+[move_right]
+KeyCode = ["KeyD"]
+
+[move_up]
+KeyCode = ["Space"]
+
+[move_down]
+KeyCode = ["ShiftLeft"]
+
+[exit]
+KeyCode = ["Escape"]
+
+[interact]
+MouseButton = ["Left"]
+
+[option]
+MouseButton = ["Right"]
+
+[camera_mode]
+KeyCode = ["KeyN"]

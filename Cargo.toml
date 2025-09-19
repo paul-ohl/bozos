@@ -5,7 +5,9 @@ edition = "2024"
 
 [dependencies]
 # Remove the feature "bevy/dynamic_linking" for release builds.
-bevy = { version = "0.16.1", features = ["dynamic_linking"] }
+bevy = { version = "0.16", features = ["dynamic_linking", "serialize"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.9"
 
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]

@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bozos::plugin_def::CameraPlugin;
+use bozos::plugin_def::KeysPlugin;
 use bozos::plugin_def::TestPlugin;
 use bozos::plugin_def::WorldLoadingPlugin;
 
@@ -14,6 +15,7 @@ fn main() {
         }))
         .add_plugins(CameraPlugin)
         .add_plugins(WorldLoadingPlugin)
+        .add_plugins(KeysPlugin)
         .add_plugins(TestPlugin)
         .run();
 }
