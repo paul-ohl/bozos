@@ -116,6 +116,7 @@ pub fn keys_setup(mut commands: Commands) {
     commands.spawn(config);
 }
 
+#[tracing::instrument(skip(actions_query, keys_config_query))]
 pub fn keys_update(
     mut evr_kbd: EventReader<KeyboardInput>,
     mut evr_mouse: EventReader<MouseButtonInput>,

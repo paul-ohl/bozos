@@ -40,6 +40,7 @@ pub fn setup_test(
     commands.spawn((Test { i: 0 },));
 }
 
+#[tracing::instrument(skip(commands, block_handles, testquery), name = "instanciate_blocks")]
 pub fn update_test(
     mut commands: Commands,
     block_handles: Res<BlockHandles>,

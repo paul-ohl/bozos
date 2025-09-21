@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{log::tracing, prelude::*};
 
 #[derive(Debug, Component)]
 pub struct BlockComponent {
@@ -28,6 +28,7 @@ pub struct BlockHandles {
     pub bedrock_handle: BlockHandle,
 }
 
+#[tracing::instrument(skip(commands, meshes, materials))]
 pub fn load_blocks(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
