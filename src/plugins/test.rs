@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::resources::blocks::{BlockBundle, BlockHandles, BlockType};
+use crate::{
+    plugins::camera,
+    resources::blocks::{BlockBundle, BlockHandles, BlockType},
+};
 
 #[derive(Debug, Component)]
 pub struct Test {
@@ -11,6 +14,8 @@ pub fn setup_test(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
+    camera_query: Query<Entity, With<camera::Camera>>,
 ) {
     // ground
     commands.spawn((
