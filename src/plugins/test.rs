@@ -65,12 +65,12 @@ pub fn update_test(
                         };
                         let position = Vec3::new(x as f32, y as f32, z as f32);
                         let block_handle = match block_type {
-                            BlockType::Dirt => &block_handles.dirt_handle,
-                            BlockType::Grass => &block_handles.grass_handle,
-                            BlockType::Stone => &block_handles.stone_handle,
-                            BlockType::Bedrock => &block_handles.bedrock_handle,
+                            BlockType::Dirt => &block_handles.Dirt,
+                            BlockType::Grass => &block_handles.Grass,
+                            BlockType::Stone => &block_handles.Stone,
+                            BlockType::Bedrock => &block_handles.Bedrock,
                         };
-                        commands.spawn(BlockBundle::new(block_type, position, block_handle));
+                        commands.spawn(BlockBundle::new(block_handle, position));
                     }
                 }
             }

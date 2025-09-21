@@ -1,6 +1,34 @@
 use bevy::prelude::*;
 
-#[derive(Debug, Component)]
+use crate::define_resource_bundle;
+
+define_resource_bundle!(
+    BlockHandles,
+    BlockHandle,
+    BlockType,
+    BlockComponent,
+    BlockBundle,
+    {
+        Dirt => {
+            mesh: Cuboid::new(1.0, 1.0, 1.0),
+            material: Color::srgb_u8(134, 96, 67)
+        },
+        Grass => {
+            mesh: Cuboid::new(1.0, 1.0, 1.0),
+            material: Color::srgb_u8(97, 159, 62)
+        },
+        Stone => {
+            mesh: Cuboid::new(1.0, 1.0, 1.0),
+            material: Color::srgb_u8(125, 125, 125)
+        },
+        Bedrock => {
+            mesh: Cuboid::new(1.0, 1.0, 1.0),
+            material: Color::srgb_u8(54, 54, 54)
+        },
+    }
+);
+
+/*#[derive(Debug, Component)]
 pub struct BlockComponent {
     pub block_type: BlockType,
 }
@@ -77,3 +105,4 @@ impl BlockBundle {
         }
     }
 }
+*/
