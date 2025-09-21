@@ -11,6 +11,7 @@ pub fn setup_test(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
 ) {
     // ground
     commands.spawn((
@@ -33,6 +34,14 @@ pub fn setup_test(
         Transform::from_xyz(4.0, 8.0, 4.0),
     ));
     commands.spawn((Test { i: 0 },));
+
+    let font = asset_server.load("fonts/FiraSans-Bold.ttf");
+    let text_font = TextFont {
+        font: font.clone(),
+        font_size: 50.0,
+        ..default()
+    };
+    let text_justification = JustifyText::Center;
 }
 
 pub fn update_test(
