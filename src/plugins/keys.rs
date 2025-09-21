@@ -6,11 +6,14 @@ use bevy::{
     },
     prelude::*,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-use crate::{get_single_component, get_single_mut_component};
+use crate::{
+    get_single_component, get_single_mut_component, resources::path::keys_config_path,
+    utils::file_manager::open_or_create_toml,
+};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum Bindings {
     KeyCode(KeyCode),
     MouseButton(MouseButton),
@@ -23,7 +26,7 @@ macro_rules! define_keys {
             $( pub $field: bool, )*
         }
 
-        #[derive(Debug, Component, Default)]
+        #[derive(Debug, Component, Default, Serialize, Deserialize, Clone)]
         pub struct KeysConfig {
             $( pub $field: Vec<Bindings>, )*
         }
@@ -79,11 +82,9 @@ fn update_action(
                 match mouse.state {
                     ButtonState::Pressed if &mouse.button == btn => {
                         new_state = true;
-                        print!("Pressed mouse button: {:?}\n", btn);
                     }
                     ButtonState::Released if &mouse.button == btn => {
                         new_state = false;
-                        print!("Released mouse button: {:?}\n", btn);
                     }
                     _ => {}
                 }
@@ -96,7 +97,7 @@ fn update_action(
 pub fn keys_setup(mut commands: Commands) {
     commands.spawn(Actions::default());
 
-    let config = KeysConfig {
+    let default_config = KeysConfig {
         move_forward: vec![
             Bindings::KeyCode(KeyCode::KeyW),
             Bindings::KeyCode(KeyCode::ArrowUp),
@@ -109,6 +110,8 @@ pub fn keys_setup(mut commands: Commands) {
         ],
         ..Default::default()
     };
+
+    let config: KeysConfig = open_or_create_toml(&keys_config_path(), default_config);
 
     commands.spawn(config);
 }
@@ -129,6 +132,5 @@ pub fn keys_update(
     for mouse_ev in evr_mouse.read() {
         actions.update_from_input(config, None, Some(mouse_ev));
     }
-
     println!("{:#?}", *actions);
 }
